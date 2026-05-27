@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-darkBg text-slate-200 selection:bg-brand-500 selection:text-white;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  input, select, textarea, button {
+    font-size: 16px;
+  }
+
+  /* Premium customized scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
+  }
+}
+
+/* Glassmorphism custom layouts */
+.glass-panel {
+  @apply bg-slate-900/60 backdrop-blur-md border border-slate-800/80 shadow-xl;
+}
+
+.glass-card {
+  @apply bg-slate-900/40 backdrop-blur-sm border border-slate-800/40 hover:border-brand-500/40 transition-all duration-300;
+}
+
+.bg-glow-purple {
+  background: radial-gradient(circle 400px at 50% -100px, rgba(139, 92, 246, 0.15), transparent);
+}
+
+.bg-glow-emerald {
+  background: radial-gradient(circle 350px at 80% 80%, rgba(16, 185, 129, 0.08), transparent);
+}
