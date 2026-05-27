@@ -49,7 +49,7 @@ export default function Chatbot({ apiKey, notes, defaultLanguage = 'English', se
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [error, setError] = useState('');
 
-  const chatEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   const groq = useMemo(() => new GroqService(apiKey, selectedModel), [apiKey, selectedModel]);
 
@@ -62,7 +62,9 @@ export default function Chatbot({ apiKey, notes, defaultLanguage = 'English', se
   }, [notes]);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   }, [messages, isLoading]);
 
   useEffect(() => {
@@ -166,7 +168,7 @@ export default function Chatbot({ apiKey, notes, defaultLanguage = 'English', se
           </div>
         )}
 
-        <div className="flex-1 overflow-y-auto space-y-4 pr-2 pb-4">
+        <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-4 pr-2 pb-4">
           {messages.map((msg) => {
             const isUser = msg.role === 'user';
             return (
@@ -188,7 +190,6 @@ export default function Chatbot({ apiKey, notes, defaultLanguage = 'English', se
             );
           })}
           {isLoading && <TypingIndicator />}
-          <div ref={chatEndRef} />
         </div>
 
         <form onSubmit={handleSendMessage} className="mt-4 border-t border-slate-800/85 pt-4 flex gap-2 shrink-0">

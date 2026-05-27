@@ -105,10 +105,12 @@ export default function Summarizer({ notes, onSaveNotes, selectedModel }) {
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [chatLoading, setChatLoading] = useState(false);
-  const chatEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   }, [chatMessages, chatLoading]);
 
   useEffect(() => {
@@ -418,7 +420,7 @@ export default function Summarizer({ notes, onSaveNotes, selectedModel }) {
 
             {chatOpen && (
               <div className="mt-4 border border-slate-800/60 rounded-xl bg-slate-950/40">
-                <div className="h-48 overflow-y-auto p-4 space-y-3">
+                <div ref={chatContainerRef} className="h-48 overflow-y-auto p-4 space-y-3">
                   {chatMessages.length === 0 && (
                     <p className="text-xs text-slate-500 text-center pt-8">Ask a question about this summary...</p>
                   )}
@@ -433,17 +435,16 @@ export default function Summarizer({ notes, onSaveNotes, selectedModel }) {
                       </div>
                     </div>
                   ))}
-                    {chatLoading && (
-                        <div className="flex gap-2">
-                          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/60 rounded-tl-sm flex gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '300ms' }} />
-                          </div>
-                        </div>
-                      )}
-                      <div ref={chatEndRef} />
+                  {chatLoading && (
+                    <div className="flex gap-2">
+                      <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/60 rounded-tl-sm flex gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
                     </div>
+                  )}
+                </div>
                 <form onSubmit={handleChatSubmit} className="border-t border-slate-800/60 p-3 flex gap-2">
                   <input
                     type="text"
