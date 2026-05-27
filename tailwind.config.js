@@ -4,20 +4,33 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
+        white: 'rgb(var(--color-white, 255 255 255) / <alpha-value>)',
+        slate: {
+          200: 'rgb(var(--slate-200) / <alpha-value>)',
+          300: 'rgb(var(--slate-300) / <alpha-value>)',
+          400: 'rgb(var(--slate-400) / <alpha-value>)',
+          500: 'rgb(var(--slate-500) / <alpha-value>)',
+          600: 'rgb(var(--slate-600) / <alpha-value>)',
+          700: 'rgb(var(--slate-700) / <alpha-value>)',
+          800: 'rgb(var(--slate-800) / <alpha-value>)',
+          900: 'rgb(var(--slate-900) / <alpha-value>)',
+          950: 'rgb(var(--slate-950) / <alpha-value>)',
+        },
         brand: {
-          500: '#8b5cf6',
-          600: '#7c3aed',
-          700: '#6d28d9',
+          300: 'rgb(var(--brand-300) / <alpha-value>)',
+          400: 'rgb(var(--brand-400) / <alpha-value>)',
+          500: 'rgb(var(--brand-500) / <alpha-value>)',
+          600: 'rgb(var(--brand-600) / <alpha-value>)',
+          700: 'rgb(var(--brand-700) / <alpha-value>)',
         },
         accent: {
-          400: '#34d399',
-          500: '#10b981',
+          400: 'rgb(var(--accent-400) / <alpha-value>)',
+          500: 'rgb(var(--accent-500) / <alpha-value>)',
         },
-        darkBg: '#090a0f',
+        darkBg: 'rgb(var(--bg-base) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
@@ -27,6 +40,7 @@ export default {
         'fade-in': 'fadeIn 0.4s ease-out forwards',
         'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'pulse-glow': 'pulseGlow 2.5s infinite alternate',
+        'scale-in': 'scaleIn 0.2s ease-out forwards',
       },
       keyframes: {
         fadeIn: {
@@ -40,7 +54,11 @@ export default {
         pulseGlow: {
           '0%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.2)' },
           '100%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.6)' },
-        }
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
       }
     },
   },

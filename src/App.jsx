@@ -7,6 +7,8 @@ import Summarizer from './components/Summarizer';
 import Chatbot from './components/Chatbot';
 import SavedNotes from './components/SavedNotes';
 import Settings from './components/Settings';
+import ThemeSwitcher from './components/ThemeSwitcher';
+import { ThemeProvider } from './context/ThemeContext';
 import { GROQ_API_KEY, DEFAULT_MODEL } from './config';
 
 const STORAGE_KEYS = {
@@ -52,8 +54,16 @@ export default function App() {
     }
   };
 
-  const handleLogin = (credentials) => {
-    const newUser = { email: credentials.email, username: credentials.email.split('@')[0] };
+  const handleLogin = (data) => {
+    const newUser = data.type === 'signup'
+      ? {
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phone: data.phone || '',
+          username: data.firstName.toLowerCase() || data.email.split('@')[0],
+        }
+      : { email: data.email, username: data.email.split('@')[0] };
     setUser(newUser);
     persist(STORAGE_KEYS.user, newUser);
   };
@@ -88,68 +98,71 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-darkBg text-slate-100 flex flex-col md:flex-row relative overflow-hidden bg-glow-purple">
-      <div className="absolute inset-0 bg-glow-emerald pointer-events-none" />
+    <ThemeProvider>
+      <div className="min-h-screen bg-darkBg text-slate-100 flex flex-col md:flex-row relative overflow-hidden bg-glow-primary">
+        <div className="absolute inset-0 bg-glow-secondary pointer-events-none" />
 
-      <Sidebar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onLogout={handleLogout}
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
-
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative z-10">
-        <Navbar
-          user={user}
-          setMobileMenuOpen={setMobileMenuOpen}
+        <Sidebar
+          activeTab={activeTab}
           setActiveTab={setActiveTab}
+          onLogout={handleLogout}
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
         />
 
-        <main className="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto pb-24 md:pb-8">
-          {activeTab === 'dashboard' && (
-            <Dashboard
-              user={user}
-              notes={notes}
-              setActiveTab={setActiveTab}
-            />
-          )}
-          {activeTab === 'summarizer' && (
-            <Summarizer
-              notes={notes}
-              onSaveNotes={saveNotesToStorage}
-              setActiveTab={setActiveTab}
-              selectedModel={selectedModel}
-            />
-          )}
-          {activeTab === 'chatbot' && (
-            <Chatbot
-              apiKey={apiKey}
-              notes={notes}
-              defaultLanguage={language}
-              selectedModel={selectedModel}
-              onLanguageChange={saveLanguage}
-            />
-          )}
-          {activeTab === 'saved-notes' && (
-            <SavedNotes
-              notes={notes}
-              onSaveNotes={saveNotesToStorage}
-              setActiveTab={setActiveTab}
-            />
-          )}
-          {activeTab === 'settings' && (
-            <Settings
-              user={user}
-              onLogout={handleLogout}
-              selectedModel={selectedModel}
-              onModelChange={saveModel}
-              language={language}
-              onLanguageChange={saveLanguage}
-            />
-          )}
-        </main>
+        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative z-10">
+          <Navbar
+            user={user}
+            setMobileMenuOpen={setMobileMenuOpen}
+            setActiveTab={setActiveTab}
+          />
+
+          <main className="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto pb-24 md:pb-8">
+            {activeTab === 'dashboard' && (
+              <Dashboard
+                user={user}
+                notes={notes}
+                setActiveTab={setActiveTab}
+              />
+            )}
+            {activeTab === 'summarizer' && (
+              <Summarizer
+                notes={notes}
+                onSaveNotes={saveNotesToStorage}
+                setActiveTab={setActiveTab}
+                selectedModel={selectedModel}
+              />
+            )}
+            {activeTab === 'chatbot' && (
+              <Chatbot
+                apiKey={apiKey}
+                notes={notes}
+                defaultLanguage={language}
+                selectedModel={selectedModel}
+                onLanguageChange={saveLanguage}
+              />
+            )}
+            {activeTab === 'saved-notes' && (
+              <SavedNotes
+                notes={notes}
+                onSaveNotes={saveNotesToStorage}
+                setActiveTab={setActiveTab}
+              />
+            )}
+            {activeTab === 'settings' && (
+              <Settings
+                user={user}
+                onLogout={handleLogout}
+                selectedModel={selectedModel}
+                onModelChange={saveModel}
+                language={language}
+                onLanguageChange={saveLanguage}
+              />
+            )}
+          </main>
+        </div>
+        <ThemeSwitcher />
       </div>
-    </div>
+    </ThemeProvider>
   );
 }

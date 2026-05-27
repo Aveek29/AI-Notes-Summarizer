@@ -3,6 +3,125 @@
 @tailwind utilities;
 
 @layer base {
+  :root, [data-mode="dark"] {
+    --color-white: 255 255 255;
+    --slate-200: 226 232 240;
+    --slate-300: 203 213 225;
+    --slate-400: 148 163 184;
+    --slate-500: 100 116 139;
+    --slate-600: 71 85 105;
+    --slate-700: 51 65 85;
+    --slate-800: 30 41 59;
+    --slate-900: 15 23 42;
+    --slate-950: 2 6 23;
+    --brand-300: 196 181 253;
+    --brand-400: 167 139 250;
+    --brand-500: 139 92 246;
+    --brand-600: 124 58 237;
+    --brand-700: 109 40 217;
+    --accent-400: 52 211 153;
+    --accent-500: 16 185 129;
+    --bg-base: 9 10 15;
+    --glow-primary: 139 92 246;
+    --glow-secondary: 16 185 129;
+    --glow-opacity-1: 0.15;
+    --glow-opacity-2: 0.08;
+  }
+
+  [data-mode="light"] {
+    --color-white: 15 23 42;
+    --slate-200: 30 41 59;
+    --slate-300: 51 65 85;
+    --slate-400: 71 85 105;
+    --slate-500: 100 116 139;
+    --slate-600: 148 163 184;
+    --slate-700: 203 213 225;
+    --slate-800: 226 232 240;
+    --slate-900: 241 245 249;
+    --slate-950: 248 250 252;
+    --bg-base: 248 250 252;
+    --glow-opacity-1: 0.08;
+    --glow-opacity-2: 0.05;
+  }
+
+  [data-theme="royal"] {
+    --brand-300: 199 200 250; --brand-400: 140 142 246; --brand-500: 99 102 241; --brand-600: 79 70 229; --brand-700: 67 56 202;
+    --accent-400: 251 191 36; --accent-500: 245 158 11;
+    --glow-primary: 99 102 241; --glow-secondary: 245 158 11;
+  }
+
+  [data-theme="emerald"] {
+    --brand-300: 130 225 215; --brand-400: 80 206 190; --brand-500: 20 184 166; --brand-600: 13 148 136; --brand-700: 15 118 110;
+    --accent-400: 74 222 128; --accent-500: 34 197 94;
+    --glow-primary: 20 184 166; --glow-secondary: 34 197 94;
+  }
+
+  [data-theme="ruby"] {
+    --brand-300: 255 200 200; --brand-400: 252 160 160; --brand-500: 248 113 113; --brand-600: 239 68 68; --brand-700: 220 38 38;
+    --accent-400: 251 146 60; --accent-500: 249 115 22;
+    --glow-primary: 248 113 113; --glow-secondary: 251 146 60;
+  }
+
+  [data-theme="sapphire"] {
+    --brand-300: 185 218 254; --brand-400: 145 193 252; --brand-500: 96 165 250; --brand-600: 59 130 246; --brand-700: 37 99 235;
+    --accent-400: 34 211 238; --accent-500: 6 182 212;
+    --glow-primary: 96 165 250; --glow-secondary: 34 211 238;
+  }
+
+  [data-theme="amber"] {
+    --brand-300: 255 235 160; --brand-400: 253 215 100; --brand-500: 251 191 36; --brand-600: 245 158 11; --brand-700: 217 119 6;
+    --accent-400: 248 113 113; --accent-500: 239 68 68;
+    --glow-primary: 251 191 36; --glow-secondary: 248 113 113;
+  }
+
+  [data-theme="plasma"] {
+    --brand-300: 255 200 235; --brand-400: 250 160 210; --brand-500: 244 114 182; --brand-600: 236 72 153; --brand-700: 219 39 119;
+    --accent-400: 192 132 252; --accent-500: 168 85 247;
+    --glow-primary: 244 114 182; --glow-secondary: 192 132 252;
+  }
+
+  [data-theme="ocean"] {
+    --brand-300: 155 238 225; --brand-400: 100 225 208; --brand-500: 45 212 191; --brand-600: 20 184 166; --brand-700: 13 148 136;
+    --accent-400: 99 102 241; --accent-500: 79 70 229;
+    --glow-primary: 45 212 191; --glow-secondary: 99 102 241;
+  }
+
+  [data-theme="forest"] {
+    --brand-300: 180 245 200; --brand-400: 130 235 165; --brand-500: 74 222 128; --brand-600: 34 197 94; --brand-700: 22 163 74;
+    --accent-400: 250 204 21; --accent-500: 234 179 8;
+    --glow-primary: 74 222 128; --glow-secondary: 250 204 21;
+  }
+
+  [data-theme="lavender"] {
+    --brand-300: 220 210 254; --brand-400: 197 175 252; --brand-500: 167 139 250; --brand-600: 139 92 246; --brand-700: 124 58 237;
+    --accent-400: 244 114 182; --accent-500: 236 72 153;
+    --glow-primary: 167 139 250; --glow-secondary: 244 114 182;
+  }
+
+  [data-theme="crimson"] {
+    --brand-300: 250 180 180; --brand-400: 245 130 130; --brand-500: 239 68 68; --brand-600: 220 38 38; --brand-700: 185 28 28;
+    --accent-400: 250 204 21; --accent-500: 234 179 8;
+    --glow-primary: 239 68 68; --glow-secondary: 250 204 21;
+  }
+
+  [data-theme="slate"] {
+    --brand-300: 210 218 232; --brand-400: 180 190 210; --brand-500: 148 163 184; --brand-600: 100 116 139; --brand-700: 71 85 105;
+    --accent-400: 129 140 248; --accent-500: 99 102 241;
+    --glow-primary: 148 163 184; --glow-secondary: 99 102 241;
+  }
+
+  [data-theme="aurora"] {
+    --brand-300: 200 205 253; --brand-400: 165 173 250; --brand-500: 129 140 248; --brand-600: 99 102 241; --brand-700: 79 70 229;
+    --accent-400: 52 211 153; --accent-500: 16 185 129;
+    --glow-primary: 129 140 248; --glow-secondary: 52 211 153;
+  }
+
+  [data-theme="cyber"] {
+    --brand-300: 160 238 248; --brand-400: 100 225 243; --brand-500: 34 211 238; --brand-600: 6 182 212; --brand-700: 8 145 178;
+    --accent-400: 232 121 249; --accent-500: 217 70 239;
+    --glow-primary: 34 211 238; --glow-secondary: 232 121 249;
+  }
+
   body {
     @apply bg-darkBg text-slate-200 selection:bg-brand-500 selection:text-white;
     -webkit-tap-highlight-color: transparent;
@@ -16,7 +135,6 @@
     font-size: 16px;
   }
 
-  /* Premium customized scrollbars */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -29,7 +147,6 @@
   }
 }
 
-/* Glassmorphism custom layouts */
 .glass-panel {
   @apply bg-slate-900/60 backdrop-blur-md border border-slate-800/80 shadow-xl;
 }
@@ -38,10 +155,10 @@
   @apply bg-slate-900/40 backdrop-blur-sm border border-slate-800/40 hover:border-brand-500/40 transition-all duration-300;
 }
 
-.bg-glow-purple {
-  background: radial-gradient(circle 400px at 50% -100px, rgba(139, 92, 246, 0.15), transparent);
+.bg-glow-primary {
+  background: radial-gradient(circle 400px at 50% -100px, rgb(var(--glow-primary) / var(--glow-opacity-1, 0.15)), transparent);
 }
 
-.bg-glow-emerald {
-  background: radial-gradient(circle 350px at 80% 80%, rgba(16, 185, 129, 0.08), transparent);
+.bg-glow-secondary {
+  background: radial-gradient(circle 350px at 80% 80%, rgb(var(--glow-secondary) / var(--glow-opacity-2, 0.08)), transparent);
 }
