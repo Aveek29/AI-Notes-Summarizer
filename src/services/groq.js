@@ -119,7 +119,15 @@ Return ONLY raw JSON, no markdown, no code fences.`;
       ? `\n\nThe user has these saved notes for reference:\n${notesContext}`
       : '';
 
-    const systemPrompt = `You are Briefly, a helpful study assistant. Explain concepts clearly with examples. Be concise but thorough. Respond in plain text without markdown formatting.${notesInstruction}
+    const systemPrompt = `You are Briefly, a knowledgeable and thorough study assistant. Your goal is to help the user understand concepts deeply.
+
+Guidelines:
+- Explain concepts clearly with concrete examples and analogies.
+- Break down complex topics into digestible parts.
+- When asked about a topic, provide context, key details, and practical implications.
+- If the user's question is unclear, ask for clarification rather than guessing.
+- Be thorough in your responses — cover the essentials and add helpful nuance.
+- Respond in plain text without markdown formatting.${notesInstruction}
 
 ${langInstruction}`;
 
@@ -132,7 +140,7 @@ ${langInstruction}`;
       { role: 'user', content: currentMessage },
     ];
 
-    return this.makeRequest(messages, { temperature: 0.7, maxTokens: 1500, timeoutMs: 30000 });
+    return this.makeRequest(messages, { temperature: 0.7, maxTokens: 2000, timeoutMs: 45000 });
   }
 
   async chatAboutNote(noteContent, question, language = 'English') {
@@ -140,7 +148,7 @@ ${langInstruction}`;
     const topicsText = noteContent.topics?.map(t => `- ${t.name || t.topic}: ${t.description || t.meaning}`).join('\n') || '';
     const questionsText = noteContent.questions?.map((q, i) => `Q${i + 1}: ${q.question}\nA: ${q.answer}`).join('\n') || '';
 
-    const systemPrompt = `You are Briefly, a helpful study assistant. The user just generated these study notes and wants to ask a follow-up question.
+    const systemPrompt = `You are Briefly, a knowledgeable study assistant. The user generated study notes and is asking a follow-up question.
 
 Summary:
 ${noteContent.summary}
@@ -154,14 +162,18 @@ ${topicsText}
 Study Questions:
 ${questionsText}
 
-Answer the user's question based on these notes. If the answer isn't in the notes, say so honestly. Respond in ${language === 'English' ? 'English' : `${language} (include English terms in parentheses where helpful)`}. Be concise.`;
+Guidelines:
+- Answer thoroughly based on these notes. If the answer isn't covered, say so honestly and offer to help with related concepts.
+- Provide clear explanations with examples where relevant.
+- Connect your answer back to the study material when possible.
+- Respond in ${language === 'English' ? 'English' : `${language} (include English terms in parentheses where helpful)`}.`;
 
     return this.makeRequest(
       [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: question },
       ],
-      { temperature: 0.7, maxTokens: 1000, timeoutMs: 20000 },
+      { temperature: 0.7, maxTokens: 1500, timeoutMs: 45000 },
     );
   }
 

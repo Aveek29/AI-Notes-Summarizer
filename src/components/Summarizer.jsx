@@ -104,12 +104,12 @@ export default function Summarizer({ notes, onSaveNotes, selectedModel }) {
   const [chatOpen, setChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
-  const chatInputRef = useRef('');
   const [chatLoading, setChatLoading] = useState(false);
+  const chatEndRef = useRef(null);
 
   useEffect(() => {
-    chatInputRef.current = chatInput;
-  });
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages, chatLoading]);
 
   useEffect(() => {
     return () => clearTimeout(savedTimeoutRef.current);
@@ -119,6 +119,8 @@ export default function Summarizer({ notes, onSaveNotes, selectedModel }) {
     setError('');
     setResults(null);
     setSaved(false);
+    setChatMessages([]);
+    setChatOpen(false);
 
     if (activeSource === 'text' && !textInput.trim()) { setError('Please enter some text to summarize.'); return; }
     if (activeSource === 'link' && (!linkInput.trim() || !/^https?:\/\//i.test(linkInput))) { setError('Please enter a valid URL starting with http:// or https://'); return; }
@@ -237,8 +239,8 @@ export default function Summarizer({ notes, onSaveNotes, selectedModel }) {
 
   const handleChatSubmit = useCallback(async (e) => {
     e.preventDefault();
-    const question = chatInputRef.current;
-    if (!question.trim() || chatLoading || !results) return;
+    if (!chatInput.trim() || chatLoading || !results) return;
+    const question = chatInput;
     setChatInput('');
     setChatMessages(prev => [...prev, { role: 'user', text: question }]);
     setChatLoading(true);
@@ -251,7 +253,7 @@ export default function Summarizer({ notes, onSaveNotes, selectedModel }) {
     } finally {
       setChatLoading(false);
     }
-  }, [chatLoading, results, selectedModel]);
+  }, [chatLoading, results, selectedModel, chatInput]);
 
   const clearAll = () => {
     setTextInput('');
@@ -431,16 +433,17 @@ export default function Summarizer({ notes, onSaveNotes, selectedModel }) {
                       </div>
                     </div>
                   ))}
-                  {chatLoading && (
-                    <div className="flex gap-2">
-                      <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/60 rounded-tl-sm flex gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '300ms' }} />
-                      </div>
+                    {chatLoading && (
+                        <div className="flex gap-2">
+                          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/60 rounded-tl-sm flex gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                          </div>
+                        </div>
+                      )}
+                      <div ref={chatEndRef} />
                     </div>
-                  )}
-                </div>
                 <form onSubmit={handleChatSubmit} className="border-t border-slate-800/60 p-3 flex gap-2">
                   <input
                     type="text"

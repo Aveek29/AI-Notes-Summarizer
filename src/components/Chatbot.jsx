@@ -45,16 +45,9 @@ export default function Chatbot({ apiKey, notes, defaultLanguage = 'English', se
     { id: 1, role: 'assistant', text: createInitialMessage(defaultLanguage), timestamp: new Date() },
   ]);
   const [inputText, setInputText] = useState('');
-  const inputTextRef = useRef('');
-  const messagesRef = useRef(messages);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    inputTextRef.current = inputText;
-    messagesRef.current = messages;
-  });
 
   const chatEndRef = useRef(null);
 
@@ -84,8 +77,8 @@ export default function Chatbot({ apiKey, notes, defaultLanguage = 'English', se
 
   const handleSendMessage = useCallback(async (e) => {
     e.preventDefault();
-    const text = inputTextRef.current;
-    if (!text.trim() || isLoading) return;
+    if (!inputText.trim() || isLoading) return;
+    const text = inputText;
 
     setMessages(prev => [...prev, {
       id: Date.now(),
@@ -98,7 +91,7 @@ export default function Chatbot({ apiKey, notes, defaultLanguage = 'English', se
     setError('');
 
     try {
-      const history = messagesRef.current.slice(-10);
+      const history = messages.slice(-10);
       const aiReply = await groq.sendMessage(history, text, selectedLanguage, notesContext);
 
       setMessages(prev => [...prev, {
@@ -108,11 +101,17 @@ export default function Chatbot({ apiKey, notes, defaultLanguage = 'English', se
         timestamp: new Date(),
       }]);
     } catch (err) {
+      setMessages(prev => [...prev, {
+        id: Date.now(),
+        role: 'assistant',
+        text: 'Sorry, I ran into an issue. Could you rephrase or try again?',
+        timestamp: new Date(),
+      }]);
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading, groq, selectedLanguage, notesContext]);
+  }, [isLoading, groq, selectedLanguage, notesContext, inputText, messages]);
 
   const clearChat = useCallback(() => {
     setMessages([
